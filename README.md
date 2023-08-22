@@ -1,4 +1,4 @@
-# Django-React-base-connection
+# Rugby Predictions
 
 A Django backend and React frontend, with custom user table and connection routes
 
@@ -43,7 +43,6 @@ You need two keys (id and secret) by creating two apps in Facebook (https://deve
 
 ## Project description
 
-- The home page simply display and update your information when you are connected.
 - You have the register page to create a new user.
 - The login page handle user created via the register page or Google and Facebook (if you have done the previous steps).
 - The logout page is a simple button that will disconnect you and redirect you to the login page.
