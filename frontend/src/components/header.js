@@ -118,6 +118,20 @@ function Header({ userConnected, onLogOut }) {
             </Link>
         </Typography>
         <Typography
+            color="inherit"
+            noWrap
+            className={classes.toolbarTitle}
+        >
+            <Link
+                component={NavLink}
+                to="/match"
+                underline="none"
+                color="textPrimary"
+            >
+                Matches
+            </Link>
+        </Typography>
+        <Typography
             variant="h6"
             color="inherit"
             noWrap

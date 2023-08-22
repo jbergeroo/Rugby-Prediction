@@ -22,22 +22,10 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-}));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-export default function SignIn({ userConnected }) {
+export default function Equip({ userConnected }) {
 
     const [equips, setEquips] = useState([])
-
-    const classes = useStyles();
 
     useEffect(() => {
 

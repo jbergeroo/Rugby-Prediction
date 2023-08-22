@@ -14,6 +14,7 @@ import Login from './components/auth/login';
 import Logout from './components/auth/logout';
 import Edit from './components/auth/edit';
 import Equip from './components/predictions/equip'
+import Match from './components/predictions/match'
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -31,6 +32,7 @@ const Routing = function () {
 					<Route path="/logout" element={<Logout />} />
 					<Route path="/edit" element={<Edit userConnected={userConnected}/>} />
 					<Route path="/equip" element={<Equip userConnected={userConnected}/>} />
+					<Route path="/match" element={<Match userConnected={userConnected}/>} />
 				</Routes >
 				<Footer />
 			</React.StrictMode>
