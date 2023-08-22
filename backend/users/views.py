@@ -11,7 +11,7 @@ class GetCustomUser(APIView):
 
     def get(self, request):
         content = {
-            'username': str(request.user),  # `django.contrib.auth.User` instance.
+            'username': request.user.username,  # `django.contrib.auth.User` instance.
             'auth': str(request.auth),  # None,
             'first_name' : request.user.first_name,
             'user_id' : request.user.id,

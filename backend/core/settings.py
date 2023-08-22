@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'drf_social_oauth2',
     # Internal
     'users',
+    'prediction',
 ]
 
 MIDDLEWARE = [
