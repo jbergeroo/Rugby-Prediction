@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
+from datetime import datetime
         
 class GetEquip(viewsets.ViewSet) :
     permission_classes = [permissions.IsAuthenticated]
@@ -42,6 +43,8 @@ class GetMatch(viewsets.ViewSet) :
 
         if id :
             self.queryset = self.queryset.filter(id=id)
+
+        self.queryset = self.queryset.filter(date__gte=datetime.now())
         
         serializer = MatchSerializer(self.queryset, many=True)
         
