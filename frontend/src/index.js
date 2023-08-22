@@ -12,6 +12,8 @@ import Footer from './components/footer';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
 import Logout from './components/auth/logout';
+import Edit from './components/auth/edit';
+import Equip from './components/predictions/equip'
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -23,10 +25,12 @@ const Routing = function () {
 			<React.StrictMode>
 				<Header userConnected={userConnected} onLogOut={() => setUserConnected(false)} />
 				<Routes >
-					<Route path="/" element={<App userConnected={userConnected} />} />
+					<Route path="/" element={<App/>} />
 					<Route path="/register" element={<Register userConnected={userConnected} />} />
 					<Route path="/login" element={<Login userConnected={userConnected} onLogIn={() => setUserConnected(true)} />} />
 					<Route path="/logout" element={<Logout />} />
+					<Route path="/edit" element={<Edit userConnected={userConnected}/>} />
+					<Route path="/equip" element={<Equip userConnected={userConnected}/>} />
 				</Routes >
 				<Footer />
 			</React.StrictMode>

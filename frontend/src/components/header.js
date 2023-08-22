@@ -55,17 +55,29 @@ function Header({ userConnected, onLogOut }) {
     }
 
     const logout = () => {
-        return <Button
-            href="#"
-            color="primary"
-            variant="outlined"
-            className={classes.link}
-            component={NavLink}
-            to="/logout"
-            onClick={onLogOut}
-        >
-            Logout
-        </Button>
+        return <>
+            <nav>
+                <Link
+                    color="textPrimary"
+                    href="#"
+                    className={classes.link}
+                    component={NavLink}
+                    to="/edit"
+                >
+                    Edit
+                </Link>
+            </nav><Button
+                href="#"
+                color="primary"
+                variant="outlined"
+                className={classes.link}
+                component={NavLink}
+                to="/logout"
+                onClick={onLogOut}
+            >
+                Logout
+            </Button>
+        </>
     }
 
     const navBar = () => {
@@ -76,22 +88,44 @@ function Header({ userConnected, onLogOut }) {
 
     const menu = (value) => {
         return <React.Fragment>
-            <Typography
-                variant="h6"
-                color="inherit"
-                noWrap
-                className={classes.toolbarTitle}
+        <Typography
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.toolbarTitle}
+        >
+            <Link
+                component={NavLink}
+                to="/"
+                underline="none"
+                color="textPrimary"
             >
-                <Link
-                    component={NavLink}
-                    to="/"
-                    underline="none"
-                    color="textPrimary"
-                >
-                    Home
-                </Link>
-            </Typography>
-        </React.Fragment>
+                Home
+            </Link>
+        </Typography>
+        <Typography
+            color="inherit"
+            noWrap
+            className={classes.toolbarTitle}
+        >
+            <Link
+                component={NavLink}
+                to="/equip"
+                underline="none"
+                color="textPrimary"
+            >
+                Equips
+            </Link>
+        </Typography>
+        <Typography
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.toolBarEmpty}
+        >
+        </Typography>
+
+    </React.Fragment>
     }
 
     return (

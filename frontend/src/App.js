@@ -18,89 +18,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  title: {
-    'font-weight': 'bold',
-    'margin-bottom': '10%'
-  },
 }));
 
 function App({ userConnected }) {
 
-  const [infos, setInfos] = useState({
-    loading: true,
-  })
-
-  const updateInfos = (res) => {
-    setInfos({ ...infos, loading: false, ...res.data })
-  }
-
-  useEffect(() => {
-    if (!userConnected) {
-      setInfos(() => ({ ...infos, loading: false }))
-    }
-    else {
-      axiosInstance.get("user").
-        then((res) => {
-          updateInfos(res)
-        }).
-        catch((err) => console.log(err))
-    }
-  }, []);
-
-  const loadingPage = () => {
-    return <>
-      <Typography component="h1" variant="h5" className={classes.title}>
-        Loading..
-      </Typography>
-      <Loading type='spinning_circles' width={100} height={100} fill='#f44242' /></>
-  }
-
-  const notConnectedPage = () => {
-    return <>
-      <Typography component="h1" variant="h5" className={classes.title}>
-        You are not connected
-      </Typography>
-      <Typography component="h5" variant="h5">
-        If you wish to connect, click {' '}
-        <Link
-          color="textPrimary"
-          href="#"
-          className={classes.link}
-          component={NavLink}
-          to="/login"
-        >
-          here
-        </Link>
-        .
-      </Typography>
-
-    </>
-  }
-
-  const connectedPage = () => {
-    return <>
-    <Typography component="h1" variant="h5" className={classes.title}>
-        My Profile
-      </Typography>
-     <User infos={infos} updateInfos={updateInfos}/>
-    </>
-  }
-
-  const mainPage = () => {
-    return <>{userConnected ? connectedPage() : notConnectedPage()}</>
-  }
-
-  const classes = useStyles()
-
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        {infos.loading ? loadingPage() : mainPage()}
-      </div>
-
-    </Container>
-  );
+  
+  return <div> App</div>
 }
 
 export default App;
