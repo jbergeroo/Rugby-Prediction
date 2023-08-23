@@ -46,6 +46,8 @@ You need two keys (id and secret) by creating two apps in Facebook (https://deve
 - You have the register page to create a new user.
 - The login page handle user created via the register page or Google and Facebook (if you have done the previous steps).
 - The logout page is a simple button that will disconnect you and redirect you to the login page.
+- You have access to all the teams, the matches.
+- You can perform predictions and compare the results with your friends.
 
 ## Run the project
 
