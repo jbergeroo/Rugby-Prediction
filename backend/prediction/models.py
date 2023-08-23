@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 def upload_to(instance, filename):
     return 'equip/{filename}'.format(filename=filename)
@@ -46,3 +47,12 @@ class Match(models.Model) :
 
     def __str__(self) :
         return '{} - {}'.format(self.equip_a.name, self.equip_b.name)
+
+class Prediction(models.Model) :
+
+    match = models.ForeignKey(
+        Match, on_delete=models.CASCADE, related_name='match')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user')
+    score_a = models.IntegerField()
+    score_b = models.IntegerField()

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import GetEquip, GetMatch
+from .views import GetEquip, GetMatch, GetPrediction
 
 app_name = 'predictions'
 
@@ -8,4 +8,5 @@ urlpatterns = [
     path('equip/', GetEquip.as_view({'get': 'list', 'post' : 'create'}), name="equip"),
     path('match/<int:pk>/', GetMatch.as_view({'get': 'list'}), name="get_match"),
     path('match/', GetMatch.as_view({'get': 'list', 'post' : 'create'}), name="match"),
+    path('', GetPrediction.as_view({'get': 'list', 'post' : 'create'}), name="prediction"),
 ]

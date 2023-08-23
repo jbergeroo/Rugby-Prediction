@@ -1,5 +1,5 @@
-from .models import Equip, Match
-from .serializers import EquipSerializer, MatchSerializer
+from .models import Equip, Match, Prediction
+from .serializers import EquipSerializer, MatchSerializer, PredictionSerializer
 
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -58,3 +58,23 @@ class GetMatch(viewsets.ViewSet) :
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetPrediction(viewsets.ViewSet) :
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PredictionSerializer
+    queryset = Prediction.objects.all()
+
+    def list(self, request) :
+    
+        self.queryset = self.queryset.filter(user=request.user.id)
+        
+        serializer = PredictionSerializer(self.queryset, many=True)
+        
+        return Response(serializer.data)
+    
+    def create(self, request, format=None):
+        serializer = PredictionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
