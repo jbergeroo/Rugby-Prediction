@@ -21,6 +21,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -45,10 +46,15 @@ export default function Match({ userConnected }) {
     const classes = useStyles()
 
     const [value, setValue] = React.useState('all');
+    const [search, setSearch] = React.useState('');
 
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+
+    const handleChangeSearch = (event) => {
+        setSearch(event.target.value)
+    }
 
     const [matches, setMatches] = useState([])
     const [equips, setEquips] = useState([])
@@ -93,7 +99,7 @@ export default function Match({ userConnected }) {
         return team ? team.group.toUpperCase() : null
     }
 
-    const showMatch = (match) => {
+    const showMatch = (match, value, search) => {
         const photoA = getPhoto(match.equip_a)
         const photoB = getPhoto(match.equip_b)
         const pool = getPool(match.equip_a)
@@ -112,6 +118,14 @@ export default function Match({ userConnected }) {
                 /* elimination */
                 return null
             }
+        }
+
+        if (teamA === null || teamB === null) {
+            return null
+        }
+
+        if (!teamA.toLowerCase().includes(search.toLowerCase()) && !teamB.toLowerCase().includes(search.toLowerCase()) ) {
+            return null
         }
 
         return <Grid item key={match.id} xs={12} sm={6} md={4} >
@@ -159,6 +173,7 @@ export default function Match({ userConnected }) {
 
     const radioButton = () => {
         return <FormControl fullWidth={true} className={classes.formGroup}>
+            <TextField id="outlined-basic" label="Team" variant="outlined" value={search} onChange={handleChangeSearch}/>
             <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="controlled-radio-buttons-group"
@@ -211,7 +226,7 @@ export default function Match({ userConnected }) {
             <Container sx={{ py: 8 }} maxWidth="md">
                 <Grid container spacing={4}>
                     {matches.map((match) => (
-                        showMatch(match, value)
+                        showMatch(match, value, search)
                     ))}
                 </Grid>
             </Container>
