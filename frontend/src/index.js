@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.css'
 
 import App from './App.js';
 
@@ -15,6 +16,7 @@ import Logout from './components/auth/logout';
 import Edit from './components/auth/edit';
 import Equip from './components/predictions/equip'
 import Match from './components/predictions/match'
+import Prediction from './components/predictions/prediction'
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -33,6 +35,7 @@ const Routing = function () {
 					<Route path="/edit" element={<Edit userConnected={userConnected}/>} />
 					<Route path="/equip" element={<Equip userConnected={userConnected}/>} />
 					<Route path="/match" element={<Match userConnected={userConnected}/>} />
+					<Route path="/prediction" element={<Prediction userConnected={userConnected}/>} />
 				</Routes >
 				<Footer />
 			</React.StrictMode>

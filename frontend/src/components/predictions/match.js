@@ -11,8 +11,9 @@ import GoogleLogin from '../axios/googleLogin';
 //MaterialUI
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
+import List from '@mui/material/List';
+import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -27,6 +28,18 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+
+import {
+    Button as BT,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Form,
+    FormGroup,
+    Input,
+    Label
+} from "reactstrap"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,6 +60,20 @@ export default function Match({ userConnected }) {
 
     const [value, setValue] = React.useState('all');
     const [search, setSearch] = React.useState('');
+    const [predictions, setPredictions] = useState([])
+
+    const [modal, setModal] = useState({
+        show: false,
+        prediction: null
+    })
+
+    const updatePredictions = () => {
+        axiosInstance.get("prediction/").
+            then((res) => {
+                setPredictions(() => res.data)
+            }).
+            catch((err) => console.log(err))
+    }
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -72,6 +99,8 @@ export default function Match({ userConnected }) {
                 setEquips(() => res.data)
             }).
             catch((err) => console.log(err))
+
+        updatePredictions()
 
     }, []);
 
@@ -106,10 +135,15 @@ export default function Match({ userConnected }) {
         const state = match.state
         const teamA = getTeam(match.equip_a)
         const teamB = getTeam(match.equip_b)
+        const prediction = predictions.filter((prediction) => {
+            return prediction.match === match.id
+        })[0]
+        const scoreA = prediction ? prediction.score_a : 0
+        const scoreB = prediction ? prediction.score_b : 0
 
         /* Use these values to filter */
         if (value !== 'all') {
-            if (value.length === 1 ) {
+            if (value.length === 1) {
                 if (value !== pool.toLowerCase()) {
                     return null
                 }
@@ -124,7 +158,7 @@ export default function Match({ userConnected }) {
             return null
         }
 
-        if (!teamA.toLowerCase().includes(search.toLowerCase()) && !teamB.toLowerCase().includes(search.toLowerCase()) ) {
+        if (!teamA.toLowerCase().includes(search.toLowerCase()) && !teamB.toLowerCase().includes(search.toLowerCase())) {
             return null
         }
 
@@ -166,14 +200,124 @@ export default function Match({ userConnected }) {
                     {match.state === 'Group match' ? <Typography>
                         {'GROUP ' + pool}
                     </Typography> : null}
+                    <Typography>
+                        {prediction ? teamA + ' (' + scoreA + ') - ' + teamB + ' (' + scoreB + ')' : "No predictions for now.."}
+                    </Typography>
                 </CardContent>
+                <Button size="small" onClick={() => showCurrent(match.id)}>Predict</Button>
             </Card>
         </Grid>
     }
 
+    const getMatch = (id) => {
+        const match = matches.filter((match) => {
+            return match.id === id
+        })[0]
+
+        if (!match) {
+            return null
+        }
+
+        const teamA = getTeam(match.equip_a)
+        const teamB = getTeam(match.equip_b)
+
+        if (!teamA) {
+            return null
+        }
+
+        return [teamA, teamB]
+    }
+
+    const handleChange3 = (event) => {
+        let { name, value } = event.target;
+        setModal({ ...modal, [name]: value })
+    }
+
+    const savePrediction = () => {
+        if (modal.prediction) {
+            axiosInstance.put("prediction/", {
+                id: modal.prediction.id,
+                score_a: modal.scoreA,
+                score_b: modal.scoreB
+            }).
+                then((res) => {
+                }).
+                catch((err) => console.log(err))
+        }
+        else {
+            axiosInstance.post("prediction/", {
+                match: modal.matchID,
+                score_a: modal.scoreA,
+                score_b: modal.scoreB
+            }).
+                then((res) => {
+                }).
+                catch((err) => console.log(err))
+        }
+        updatePredictions()
+        unShow()
+
+    }
+
+    const showModal = () => {
+        const match = getMatch(modal.matchID)
+
+        const [teamA, teamB] = match
+        return <Modal isOpen={true} toggle={() => unShow()}>
+            <ModalHeader toggle={() => unShow()}>Prediction</ModalHeader>
+            <ModalBody>
+                <Form>
+                    <FormGroup>
+                        <Label for="scoreA">{teamA}</Label>
+                        <Input
+                            type="text"
+                            id="scoreA"
+                            name="scoreA"
+                            value={modal.scoreA}
+                            onChange={handleChange3}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="scoreB">{teamB}</Label>
+                        <Input
+                            type="text"
+                            id="scoreB"
+                            name="scoreB"
+                            value={modal.scoreB}
+                            onChange={handleChange3}
+                        />
+                    </FormGroup>
+                </Form>
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                    color="success"
+                    onClick={() => savePrediction()}
+                >
+                    Update
+                </Button>
+            </ModalFooter>
+        </Modal>
+    }
+
+    const showCurrent = (matchID) => {
+        const prediction = predictions.filter((prediction) => {
+            return prediction.match === matchID
+        })[0]
+
+        const scoreA = prediction ? prediction.score_a : 0
+        const scoreB = prediction ? prediction.score_b : 0
+
+        setModal({ show: true, prediction: prediction, scoreA: scoreA, scoreB: scoreB, matchID: matchID })
+    }
+
+    const unShow = () => {
+        setModal({ show: false, prediction: null })
+    }
+
     const radioButton = () => {
         return <FormControl fullWidth={true} className={classes.formGroup}>
-            <TextField id="outlined-basic" label="Team" variant="outlined" value={search} onChange={handleChangeSearch}/>
+            <TextField id="outlined-basic" label="Team" variant="outlined" value={search} onChange={handleChangeSearch} />
             <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="controlled-radio-buttons-group"
@@ -229,6 +373,7 @@ export default function Match({ userConnected }) {
                         showMatch(match, value, search)
                     ))}
                 </Grid>
+                {modal.show ? showModal() : null}
             </Container>
         </main>
     );

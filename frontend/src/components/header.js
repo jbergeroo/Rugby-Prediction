@@ -132,12 +132,27 @@ function Header({ userConnected, onLogOut }) {
             </Link>
         </Typography>
         <Typography
+            color="inherit"
+            noWrap
+            className={classes.toolbarTitle}
+        >
+            <Link
+                component={NavLink}
+                to="/prediction"
+                underline="none"
+                color="textPrimary"
+            >
+                Predictions
+            </Link>
+        </Typography>
+        <Typography
             variant="h6"
             color="inherit"
             noWrap
             className={classes.toolBarEmpty}
         >
         </Typography>
+        
 
     </React.Fragment>
     }
