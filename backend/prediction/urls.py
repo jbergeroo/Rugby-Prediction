@@ -8,5 +8,5 @@ urlpatterns = [
     path('equip/', GetEquip.as_view({'get': 'list', 'post' : 'create'}), name="equip"),
     path('match/<int:pk>/', GetMatch.as_view({'get': 'list'}), name="get_match"),
     path('match/', GetMatch.as_view({'get': 'list', 'post' : 'create'}), name="match"),
-    path('', GetPrediction.as_view({'get': 'list', 'post' : 'create'}), name="prediction"),
+    path('', GetPrediction.as_view({'get': 'list', 'post' : 'create', 'put' : 'update'}), name="prediction"),
 ]

@@ -72,9 +72,23 @@ class GetPrediction(viewsets.ViewSet) :
         return Response(serializer.data)
     
     def create(self, request, format=None):
-        serializer = PredictionSerializer(data=request.data)
+        request_data = request.data
+        request_data = {**request_data, "user" : request.user.id}
+        serializer = PredictionSerializer(data=request_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def update(self, request) :
+        data = request.data
+        try :
+            prediction = Prediction.objects.get(id=data["id"])
+            prediction.score_a = data['score_a']
+            prediction.score_b = data['score_b']
+            prediction.save()
+
+            return Response(data, status=status.HTTP_200_OK)
+        except :
+            return Response({"error" : "Couldn't process the request"}, status=status.HTTP_400_BAD_REQUEST)

@@ -56,3 +56,6 @@ class Prediction(models.Model) :
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user')
     score_a = models.IntegerField()
     score_b = models.IntegerField()
+
+    class Meta: 
+        ordering = ('match',)
